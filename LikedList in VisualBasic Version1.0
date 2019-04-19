@@ -1,0 +1,76 @@
+'LinkedList Program in Visual Basic
+Module Module1
+    Const NULLPOINTER = -1
+
+    Structure ListNode
+        Dim Data As String
+        Dim Pointer As Integer
+    End Structure
+
+    Dim NumberOfElements As Integer = 7
+    Dim StartPointer As Integer
+    Dim FreePointer As Integer
+    Dim NewPointer As Integer
+    Dim PreviousNodePtr As Integer
+    Dim List(NumberOfElements) As ListNode
+
+    Sub Main()
+        InitializeList()
+        InsertNode("b")
+        InsertNode("v")
+        InsertNode("a")
+        InsertNode("h")
+        InsertNode("e")
+        InsertNode("j")
+        InsertNode("q")
+        InsertNode("t") 'here the error wiil be consoled to the scrren'
+        OutputAllNodes()
+    End Sub
+
+    Sub InitializeList()
+        FreePointer = 0 'FreePointer Points to the 1st index of an array
+        StartPointer = FreePointer 'Make the startpointer equals to the FreePointer
+        NewPointer = NULLPOINTER 'Make the newnodepointer equal to the nullpointer
+        PreviousNodePtr = NULLPOINTER
+        For i = 0 To 5
+            List(i).Pointer = i + 1 'Init the pointer 
+        Next
+        'Init the last pointer to nullpointer 
+        List(6).Pointer = NULLPOINTER
+    End Sub
+
+    Sub InsertNode(ByVal NewItem As String)
+        If FreePointer <> NULLPOINTER Then
+
+            'Init the previouslist pointer to the next pointer 
+            ' and replace the null to the nextpointer
+            If PreviousNodePtr <> NULLPOINTER Then
+                List(PreviousNodePtr).Pointer = FreePointer
+            End If
+
+            ' add the newitem and the init the freelist pointer to hold the record of the nextpointer
+            ' in order to point to the next pointer
+            NewPointer = FreePointer
+            List(NewPointer).Data = NewItem
+            FreePointer = List(NewPointer).Pointer
+
+            ' after adding data to current pointer, make it null to stop the reference to the next pointer
+            List(NewPointer).Pointer = NULLPOINTER
+            PreviousNodePtr = NewPointer ' init the the current pointer index to the previousNodePtr
+        Else
+            Console.WriteLine("List Overflow")
+        End If
+    End Sub
+
+    Sub OutputAllNodes()
+        Dim CurrentPointer = StartPointer 'starting at the beginning of the list 
+        While CurrentPointer <> NULLPOINTER
+            'display the data
+            Console.WriteLine(List(CurrentPointer).Data)
+            ' follow the currentpointer to the nextNode 
+            CurrentPointer = List(CurrentPointer).Pointer
+        End While
+
+    End Sub
+
+End Module
