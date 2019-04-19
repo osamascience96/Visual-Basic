@@ -1,0 +1,52 @@
+'Pointers Experiment
+Imports System
+
+Module Program
+    'returs a handle to allocate the heap memory from default memory using current call(process)'
+    Private Declare Function GetProcessHeap Lib "kernel32" () As Long
+    ' heap allocation of defined bytes 
+    Private Declare Function HeapAlloc Lib "kernel32" _
+        (ByVal mHeap As Long, ByVal flags As Long,
+        ByVal bytes As Long) As Long
+    ' Copy Memory of the desired object 
+    ' Make Subprocedure because the MoveMemory has no return type
+    Private Declare Sub CopyMemoryWrite Lib "kernel32" Alias _
+    "RtlMoveMemory" (ByRef Destination As Long,
+    ByRef Source As Long, ByVal Length As Long)
+    'Read Copied Memory
+    Private Declare Sub CopyMemoryRead Lib "kernel32" Alias _
+    "RtlMoveMemory" (ByRef Destination As Long,
+    ByRef Source As Long, ByVal Length As Long)
+
+    Sub Main(args As String())
+        Dim ptr As Long
+        Dim hHeap As Long
+        'display the pointer before allocating the heap memory'
+        Console.WriteLine(ptr)
+        'init the heap memory from default memory using the current call(process)
+        hHeap = GetProcessHeap()
+        'allocating the heap memory of 2 bytes as the integer in vb.net is 2 bytes 
+        ptr = HeapAlloc(hHeap, 0, 2)
+
+        'if the pointer is not equal to 0
+        If ptr <> 0 Then
+            'displaying the ptr value after allocating the memory to heap 
+            Console.WriteLine(ptr)
+            'init an integer variable 
+            Dim i As Integer
+            i = 10
+            'copy memory of i to ptr
+            CopyMemoryWrite(ptr, i, 2) '(Destination, Sorue, Size in bytes)
+            ' init another integer variable 
+            Dim j As Integer
+            'read the copied memory from pointer ptr
+            CopyMemoryRead(j, ptr, 2)
+
+            ' display the final result
+            Console.WriteLine("The Address of Pointer is " & CStr(ptr) + "and the value is " & CStr(j))
+
+        End If
+
+        Console.ReadLine()
+    End Sub
+End Module
