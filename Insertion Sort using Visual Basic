@@ -1,0 +1,32 @@
+'Insertion Sort Program
+Module Module1
+
+    Dim List = {53, 21, 60, 18, 42, 19}
+    Dim NumbeOfItems = List.Length
+    Dim ItemToBeInserted As Integer
+    Dim CurrentItem As Integer
+
+    Sub Main()
+        ' iterate through the list 
+        For Pointer = 1 To NumbeOfItems - 1
+            ItemToBeInserted = List(Pointer)
+            CurrentItem = Pointer - 1
+            While List(CurrentItem) > ItemToBeInserted
+                List(CurrentItem + 1) = List(CurrentItem)
+                List(CurrentItem) = ItemToBeInserted
+                If CurrentItem > 0 Then
+                    CurrentItem = CurrentItem - 1
+                End If
+            End While
+        Next
+
+        'Display the list after sorting 
+        For i = 0 To NumbeOfItems - 1
+            Console.Write(List(i))
+            Console.Write(" ")
+        Next
+        Console.WriteLine()
+    End Sub
+
+End Module
+    
